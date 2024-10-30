@@ -116,47 +116,74 @@
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Bitcoin BTC</label>
                                             <input type="text" class="form-control" name="btc" value="{{$admin_wallets->btc}}"
-                                                placeholder="put your new address or tag and press update wallets">
+                                                placeholder="put your new address or tag and press update wallets" required>
+                                                @error('btc')
+                                                    <em class="text-danger">{{$message}}</em>
+                                                @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">USDT Trc20</label>
                                             <input type="text" class="form-control" name="usdt" value="{{$admin_wallets->usdt}}"
-                                                placeholder="put your new address or tag and press update wallets">
+                                                placeholder="put your new address or tag and press update wallets" required>
+                                                @error('usdt')
+                                                    <em class="text-danger">{{$message}}</em>
+                                                @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Cash App </label>
                                             <input type="text" class="form-control" name="cash_app" value="{{$admin_wallets->cash_app}}"
-                                                placeholder="put your new address or tag and press update wallets">
+                                                placeholder="put your new address or tag and press update wallets" required>
+                                                @error('cash_app')
+                                                    <em class="text-danger">{{$message}}</em>
+                                                @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">PayPal</label>
                                             <input type="text" class="form-control" name="paypal" value="{{$admin_wallets->paypal}}"
-                                                placeholder="put your new address or tag and press update wallets">
+                                                placeholder="put your new address or tag and press update wallets" required>
+                                                 @error('paypal')
+                                                    <em class="text-danger">{{$message}}</em>
+                                                @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Zelle</label>
                                             <input type="text" class="form-control" name="zelle" value="{{$admin_wallets->zelle}}"
-                                                placeholder="put your new address or tag and press update wallets">
+                                                placeholder="put your new address or tag and press update wallets" required>
+                                                 @error('zelle')
+                                                    <em class="text-danger">{{$message}}</em>
+                                                @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">BNB Smart Chain (BEP20)</label>
                                             <input type="text" class="form-control" name="bnb" value="{{$admin_wallets->bnb}}"
-                                                placeholder="put your new address or tag and press update wallets">
+                                                placeholder="put your new address or tag and press update wallets" required>
+                                                 @error('bnb')
+                                                    <em class="text-danger">{{$message}}</em>
+                                                @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Bitcoin chash BCH</label>
                                             <input type="text" class="form-control" name="bch" value="{{$admin_wallets->bch}}"
-                                                placeholder="put your new address or tag and press update wallets">
+                                                placeholder="put your new address or tag and press update wallets" required>
+                                                 @error('bch')
+                                                    <em class="text-danger">{{$message}}</em>
+                                                @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Litecoin LTC</label>
                                             <input type="text" class="form-control" name="ltc" value="{{$admin_wallets->ltc}}"
-                                                placeholder="put your new address or tag and press update wallets">
+                                                placeholder="put your new address or tag and press update wallets" required>
+                                                 @error('ltc')
+                                                    <em class="text-danger">{{$message}}</em>
+                                                @enderror
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Ripple XRP</label>
                                             <input type="text" class="form-control" name="xrp" value="{{$admin_wallets->xrp}}"
-                                                placeholder="put your new address or tag and press update wallets">
+                                                placeholder="put your new address or tag and press update wallets" required>
+                                                 @error('xrp')
+                                                    <em class="text-danger">{{$message}}</em>
+                                                @enderror
                                         </div>
                                     </div>
                                     <div class="card-footer text-end">

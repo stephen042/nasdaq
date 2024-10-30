@@ -1,7 +1,7 @@
 <div class="col-xl-12 col-md-12 col-sm-12 mt-5">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Create New Ai Plan</h3>
+            <h3 class="card-title">Create New Investment Plan</h3>
         </div>
         <form wire:submit="create_ai_plan">
             <div class="card-body">

@@ -6,7 +6,7 @@
                     <div class="col">
                         <p class="alert alert-success rounded-pill" style="width: max-content;">
                             Live account</p>
-                        <p class="mb-2 number-font">Trading Progress {{ $user_data->progress_bar_status}}%</p>
+                        <p class="mb-2 number-font">Investment Progress {{ $user_data->progress_bar_status}}%</p>
                         <div class="progress progress-md">
                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-info-1 w-{{auth()->user()->progress_bar_status}}">
                                 {{$user_data->progress_bar_status}}%</div>

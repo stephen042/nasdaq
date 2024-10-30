@@ -33,10 +33,10 @@
                             Plans</span><i class="angle fa fa-angle-right"></i></a>
                     <ul class="slide-menu">
                         <li class="side-menu-label1"><a href="javascript:void(0)">PLANS</a></li>
-                        <li><a href="{{ route('create_ai_plan') }}" class="slide-item">Create AI- Plans</a></li>
+                        <li><a href="{{ route('create_ai_plan') }}" class="slide-item">Create Investment- Plans</a></li>
                         <li><a href="{{ route('create_status_plan') }}" class="slide-item">Create Status Plans</a></li>
-                        <li><a href="{{ route('create_signal_plan') }}" class="slide-item">Create Signal
-                                Plans</a></li>
+                        {{-- <li><a href="{{ route('create_signal_plan') }}" class="slide-item">Create Signal
+                                Plans</a></li> --}}
                     </ul>
                 </li>
                 <li class="slide">

@@ -3,7 +3,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col">
-                    <p class="mb-2 number-font">Trading Progress
+                    <p class="mb-2 number-font">Investment Progress
                         {{ $user_data->progress_bar_status }}%</p>
                     <div class="progress progress-md">
                         <div
@@ -15,7 +15,7 @@
             <div class=row>
                 <form wire:submit="trade">
                     <div class="form-group col-10">
-                        <label class="form-label">Manage Trading Progress</label>
+                        <label class="form-label">Manage Investment Progress</label>
                         <div class="input-group">
                             <input type="number" wire:model.live="trade_progress" class="form-control form-control-sm"
                                 placeholder="e.g 47">

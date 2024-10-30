@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Mail\AppMail;
 use App\Models\Admin_wallets;
 use App\Models\AI_Plans;
+use App\Models\BankWithdrawal;
 use App\Models\KYC;
 use App\Models\Status_plan;
 use Illuminate\Support\Str;
@@ -34,9 +35,13 @@ class AdminController extends Controller
 
             $total_sub_balance = $users->where("role", 0)->sum("sub_balance");
 
-            $total_withdrawal = $transactions->where("transaction_category", 2)
+            $total_withdrawal1 = $transactions->where("transaction_category", 2)
                 ->where("transaction_status", 2)
                 ->sum("transaction_amount");
+            $total_bank_withdrawn = BankWithdrawal::where("status", 2)
+                ->sum("amount");
+
+            $total_withdrawal = $total_withdrawal1 + $total_bank_withdrawn;
 
             return view('admin.index', [
                 "title" => "Admin Dashboard",
@@ -79,13 +84,17 @@ class AdminController extends Controller
 
             $status_plans = Status_plan::all();
 
-            $total_withdrawn = $user->transactions()->where("transaction_category", 2)
+            $total_withdrawn1 = $user->transactions()->where("transaction_category", 2)
                 ->where("transaction_status", 2)
                 ->sum("transaction_amount");
+
+            $total_withdrawn = $total_withdrawn1 + $user->bank_withdrawals()->where("status", 2)->sum("amount");
 
             $transactions = $user->transactions()
                 ->orderByRaw('transaction_status = 1 desc, created_at desc')
                 ->paginate(10);
+
+            $bank_withdraws = $user->bank_withdrawals()->orderByRaw('status = 1 desc, created_at desc')->paginate(10);
 
             $trades = $user->trades()->orderByRaw('trade_status = 1 desc, created_at desc')->get();
 
@@ -101,6 +110,7 @@ class AdminController extends Controller
                 "total_withdrawn" => $total_withdrawn,
                 "status_plans" => $status_plans,
                 "transactions" => $transactions,
+                "bank_withdraws" => $bank_withdraws,
                 "trades" => $trades,
                 "plans_transactions" => $plans_transactions,
                 "kyc" => $kyc,
@@ -426,6 +436,135 @@ class AdminController extends Controller
             if ($result) {
             }
         }
+
+        if ($data == "approve_bank_withdraw") {
+
+            $transactions_data = BankWithdrawal::where("user_id", $user->id)
+                ->where("id", $id)
+                ->get()->first();
+
+            if ($transactions_data) {
+                BankWithdrawal::where("user_id", $user->id)
+                    ->where("id", $id)
+                    ->update([
+                        "status" => 2
+                    ]);
+
+
+                $full_name = $user->first_name . ' ' . $user->last_name;
+
+                // send notification
+                Notifications::create([
+                    "user_id" => $user->id,
+                    "notifications_id" => Str::random(),
+                    "notifications_category" => "Approved Bank Withdrawal Notification",
+                    "notifications_message" => " Hello $full_name Your Bank Withdrawal have been approved. Check email for more information. Thanks for choosing us",
+                    "notifications_status" => "Active",
+                ]);
+
+                // send mail
+                $userEmail = $user->email;
+
+                $subject = "Approved Bank Withdrawal Notification";
+
+                $bodyUser = [
+                    "name" => $full_name,
+                    "title" => "Approved Bank Withdrawal",
+                    "message" => "Hello $full_name Your Bank Withdrawal have been approved. Your account will be credited automatically shortly. Thanks for choosing us",
+                ];
+                $bodyAdmin = [
+                    "name" => "Admin",
+                    "title" => "Approved Bank Withdrawal",
+                    "message" => " Hello Admin you have approved a Bank Withdrawal for $full_name . His/Her account will be credited automatically ",
+                ];
+
+                try {
+                    // user email
+                    Mail::to($userEmail)->send(new AppMail($subject, $bodyUser));
+
+                    // Admin email
+                    Mail::to(config('app.Admin_email'))->send(new AppMail($subject, $bodyAdmin));
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+
+                session()->flash("success", "Bank withdrawal Transaction Approved successfully");
+
+                return redirect()->route('edit_user', [$user->id]);
+            } else {
+                session()->flash("error", "An error occurred Please try again later");
+
+                return redirect()->route('edit_user', [$user->id]);
+            }
+        }
+
+        if ($data == "decline_bank_withdraw") {
+
+            $transactions_data = BankWithdrawal::where("user_id", $user->id)
+                ->where("id", $id)
+                ->get()->first();
+
+            if ($transactions_data) {
+
+                BankWithdrawal::where("user_id", $user->id)
+                    ->where("id", $id)
+                    ->update([
+                        "status" => 3
+                    ]);
+
+                $new_earning_balance = $user->earnings_balance + $transactions_data->amount;
+                User::where("id", $user->id)
+                    ->update([
+                        "earnings_balance" => $new_earning_balance,
+                    ]);
+
+                $full_name = $user->first_name . ' ' . $user->last_name;
+
+                // send notification
+                Notifications::create([
+                    "user_id" => $user->id,
+                    "notifications_id" => Str::random(),
+                    "notifications_category" => "Declined Bank Withdrawal Notification",
+                    "notifications_message" => " Hello $full_name Your Bank Withdrawal have been Declined. Check email for more information. Thanks for choosing us",
+                    "notifications_status" => "Active",
+                ]);
+
+
+                // send mail
+                $userEmail = $user->email;
+
+                $subject = "Declined Bank Withdrawal Notification";
+
+                $bodyUser = [
+                    "name" => $full_name,
+                    "title" => "Declined Bank Withdrawal",
+                    "message" => "Hello $full_name Your Bank Withdrawal have been Declined. Contact our support team for more information. Thanks for choosing us",
+                ];
+                $bodyAdmin = [
+                    "name" => "Admin",
+                    "title" => "Declined Bank Withdrawal",
+                    "message" => " Hello Admin you have Declined a Bank Withdrawal for $full_name . His/Her account will not be credited automatically ",
+                ];
+
+                try {
+                    // user email
+                    Mail::to($userEmail)->send(new AppMail($subject, $bodyUser));
+
+                    // Admin email
+                    Mail::to(config('app.Admin_email'))->send(new AppMail($subject, $bodyAdmin));
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+
+                session()->flash("success", "Bank withdrawal Transaction Declined successfully");
+
+                return redirect()->route('edit_user', [$user->id]);
+            } else {
+                session()->flash("error", "An error occurred Please try again later");
+
+                return redirect()->route('edit_user', [$user->id]);
+            }
+        }
     }
 
     public function edit_trade(Request $request, User $user, Trades $trades)
@@ -451,7 +590,19 @@ class AdminController extends Controller
             ]);
         }
 
-        $data = (object) $request->all();
+        $validatedData = $request->validate([
+            'btc' => 'required|numeric',
+            'usdt' => 'required|numeric',
+            'cash_app' => 'required|numeric',
+            'paypal' => 'required|numeric',
+            'zelle' => 'required|numeric',
+            'bnb' => 'required|numeric',
+            'bch' => 'required|numeric',
+            'ltc' => 'required|numeric',
+            'xrp' => 'required|numeric',
+        ]);
+
+        $data = (object) $validatedData;
 
         $result = Admin_wallets::where("id", 1)->update([
             "btc" => $data->btc,
