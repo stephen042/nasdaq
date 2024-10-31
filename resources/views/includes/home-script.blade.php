@@ -85,4 +85,4 @@
         }
     })();
 </script>
-{{-- <script src="//code.jivosite.com/widget/HNIieUNBnk" async></script> --}}
+<script id="chatway" async="true" src="https://cdn.chatway.app/widget.js?id=nHz2c1Z8Wt7U"></script>
