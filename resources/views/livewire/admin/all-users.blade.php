@@ -23,6 +23,8 @@
         </div>
     </td>
     <td class="text-muted fs-15 fw-semibold">
+        {{ $user->phone }}</td>
+    <td class="text-muted fs-15 fw-semibold">
         {{ $user->country }}</td>
     <td class="text-muted fs-15 fw-semibold">
         {{ date('Y/M/d', strtotime($user->created_at)) }} </td>

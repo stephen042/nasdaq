@@ -136,6 +136,7 @@
                                                     <tr>
                                                         <th class="bg-transparent border-bottom-0 w-5">S.no</th>
                                                         <th class="bg-transparent border-bottom-0">Name</th>
+                                                        <th class="bg-transparent border-bottom-0">Phone Number</th>
                                                         <th class="bg-transparent border-bottom-0">Country</th>
                                                         <th class="bg-transparent border-bottom-0">Registered on</th>
                                                         <th class="bg-transparent border-bottom-0">Balance</th>
