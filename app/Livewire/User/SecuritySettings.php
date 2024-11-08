@@ -21,10 +21,10 @@ class SecuritySettings extends Component
     #[Rule('required', message: "Select document")]
     public $document;
 
-    #[Rule('image|max:1024')] // 1MB Max
+    #[Rule('image|max:6024')] // 6MB Max
     public $front_document;
 
-    #[Rule('image|max:1024')] // 1MB Max
+    #[Rule('image|max:6024')] // 6MB Max
     public $back_document;
 
     #[Rule('required')]

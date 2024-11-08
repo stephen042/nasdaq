@@ -2,12 +2,10 @@
     @if (auth()->user()->verify_status == 0)
         <script>
             window.alert('Account is not verified');
-            window.location.href = "{{ route('security_settings') }}";
         </script>
     @elseif(auth()->user()->verify_status == 3)
         <script>
             window.alert('Verification denied, please submit your details again');
-            window.location.href = "{{ route('security_settings') }}";
         </script>
     @endif
 @endif
