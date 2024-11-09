@@ -34,7 +34,7 @@ class Deposit extends Component
     public $amount;
 
     protected $rules = [
-        'amount' => ['required', 'numeric', 'min:500'],
+        'amount' => ['required', 'numeric', 'min:100'],
     ];
 
     protected $messages = [
@@ -67,7 +67,7 @@ class Deposit extends Component
         }
     }
 
-    #[Validate('image|max:1024')] // 1MB Max
+    #[Validate('image|max:4024')] // 4MB Max
     public $proof;
 
     public function deposit()
