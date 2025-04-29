@@ -19,6 +19,24 @@ use Livewire\Attributes\Validate;
 class UserController extends Controller
 {
 
+    public function register(Request $request, $referral = null)
+    {
+        if ($referral) {
+            // Find the user with the given last name as a referral
+            $referrer = User::where("last_name", $referral)->first();
+            
+            // If no matching user is found, set referrer to null
+            if (!$referrer) {
+                $referral = null;
+            }
+        }
+    
+        return view('auth.register', [
+            "title" => "Register",
+            "referral" => $referral ?? '',
+        ]);
+    }
+    
     public function users(Request $request)
     {
 

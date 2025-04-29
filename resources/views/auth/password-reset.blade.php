@@ -23,7 +23,8 @@
                 <div class="col col-login mx-auto mt-7">
                     <div class="text-center">
                         <a href="/">
-                            <img src="{{ asset('home-assets/assets/img/logo-white.png') }}" class="header-brand-img" style="" alt="">
+                            <img src="{{ asset('home-assets/assets/img/logo-white.png') }}" class="header-brand-img"
+                                style="" alt="">
                         </a>
                     </div>
                 </div>
@@ -40,15 +41,15 @@
                     </div>
                     @endif
                     @if (session()->has('success'))
-                        <div class="alert alert-success alert-dismissible fade show w-50 bg-dark" role="alert">
-                            <span class="alert-inner--icon"><i class="fe fe-thumbs-up"></i></span>
-                            <span class="alert-inner--text"><strong>Success!</strong>
-                                {{ session('success') }}
-                            </span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
+                    <div class="alert alert-success alert-dismissible fade show w-50 bg-dark" role="alert">
+                        <span class="alert-inner--icon"><i class="fe fe-thumbs-up"></i></span>
+                        <span class="alert-inner--text"><strong>Success!</strong>
+                            {{ session('success') }}
+                        </span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
                     @endif
                 </center>
                 <div class="container-login100">
@@ -63,19 +64,23 @@
                                         New Password
                                     </span>
                                     @error('password')
-                                        <em class="text-danger">{{ $message }}</em>
+                                    <em class="text-danger">{{ $message }}</em>
                                     @enderror
                                     <div class="wrap-input100 validate-input" data-bs-validate="Password is required">
-                                        <input class="input100" type="password" wire:model="password" name="password"
-                                            required placeholder="New Password">
+                                        <input class="input100" type="password" wire:model="password" id="password"
+                                            name="password" required placeholder="New Password">
                                         <span class="focus-input100"></span>
                                         <span class="symbol-input100">
                                             <i class="zmdi zmdi-lock" aria-hidden="true"></i>
                                         </span>
+                                        <span class="position-absolute end-0 top-50 translate-middle-y me-3"
+                                            onclick="togglePassword()" style="cursor: pointer;">
+                                            <i id="togglePasswordIcon" class="zmdi zmdi-eye"></i>
+                                        </span>
                                     </div>
 
                                     @error('password_confirmation')
-                                        <em class="text-danger">{{ $message }}</em>
+                                    <em class="text-danger">{{ $message }}</em>
                                     @enderror
                                     <div class="wrap-input100 validate-input" data-bs-validate="Password is required">
                                         <input class="input100" wire:model="password_confirmation" type="password"
@@ -128,6 +133,22 @@
             });
 
         });
+    </script>
+    <script>
+        function togglePassword() {
+                let passwordField = document.getElementById("password");
+                let toggleIcon = document.getElementById("togglePasswordIcon");
+        
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";
+                    toggleIcon.classList.remove("zmdi-eye");
+                    toggleIcon.classList.add("zmdi-eye-off");
+                } else {
+                    passwordField.type = "password";
+                    toggleIcon.classList.remove("zmdi-eye-off");
+                    toggleIcon.classList.add("zmdi-eye");
+                }
+            }
     </script>
 
 </body>

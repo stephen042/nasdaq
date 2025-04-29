@@ -24,38 +24,42 @@ class Register extends Component
 
     public $gender;
 
+    public $referral;
+
     public $password;
 
     public $password_confirmation;
 
 
-
-    public function register(){
+    public function register()
+    {
 
         $validated = $this->validate([
             'first_name' => ['required', 'string', 'max:255', 'min:3'],
             'last_name' => ['required', 'string', 'max:255', 'min:3'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => ['required','min:8','max:13','unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'phone' => ['required', 'min:8', 'max:13', 'unique:' . User::class],
             'country' => ['required', 'string'],
             'gender' => ['required', 'string'],
-            'password' => ['required',  'confirmed','min:6'],
+            'referral' => ['nullable', 'string', 'max:255'],
+            'password' => ['required',  'confirmed', 'min:6'],
         ]);
 
 
         $insert = User::create([
-           'first_name' => $validated['first_name'],
-           'last_name' => $validated['last_name'],
-           'email' => $validated['email'],
-           'phone' => $validated['phone'],
-           'balance' => 0,
-           'sub_balance' => 0,
-           'password' => $validated['password'],
-           'gender' => $validated['gender'],
-           'country' => $validated['country'],
-           'verify_status' => 0,
-           'role' => 0,
-           'account_status' => 'None',
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'balance' => 0,
+            'sub_balance' => 0,
+            'password' => $validated['password'],
+            'gender' => $validated['gender'],
+            'country' => $validated['country'],
+            'verify_status' => 0,
+            'role' => 0,
+            'referred_by' => $validated['referral'],
+            'account_status' => 'None',
         ]);
 
 
@@ -64,7 +68,7 @@ class Register extends Component
             $userEmail = $validated['email'];
             $password = $validated['password'];
 
-            $full_name = $validated['last_name']." ". $validated['first_name'];
+            $full_name = $validated['last_name'] . " " . $validated['first_name'];
             $subject = "Welcome Notification";
 
 
@@ -97,14 +101,31 @@ class Register extends Component
                 //throw $th;
             }
 
-            session()->flash('success','Account Created Successfully. Check Your email for more information');
+            // ✅ Check if referral exists
+            if ($validated['referral']) {
+                $referrer = User::where('last_name', $validated['referral'])->first();
+
+                if ($referrer) {
+                    // ✅ Send Email to Referrer
+                    $bodyReferrer = [
+                        "name" => $referrer->first_name . " " . $referrer->last_name,
+                        "title" => "Your Referral Has Registered",
+                        "message" => "Good news! Someone you referred, <strong>$full_name</strong>, has successfully registered on $app.",
+                    ];
+                    try {
+                        Mail::to($referrer->email)->send(new AppMail("Your Referral Has Registered", $bodyReferrer));
+                    } catch (\Throwable $th) {
+                        // Log email error
+                    }
+                }
+            }
+            session()->flash('success', 'Account Created Successfully. Check Your email for more information');
 
             return $this->redirect('/login');
         }
-        
+
         session()->flash('error', 'An error occurred please try again');
         return redirect('/register');
-       
     }
 
     public function render()

@@ -33,26 +33,26 @@
                     <div class="main-container container-fluid">
                         <center>
                             @if (session()->has('error'))
-                                <div class="alert alert-danger alert-dismissible fade show w-80" role="alert">
-                                    <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
-                                    <span class="alert-inner--text"><strong>error!</strong>
-                                        {{ session('error') }}
-                                    </span>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div>
+                            <div class="alert alert-danger alert-dismissible fade show w-80" role="alert">
+                                <span class="alert-inner--icon"><i class="fe fe-slash"></i></span>
+                                <span class="alert-inner--text"><strong>error!</strong>
+                                    {{ session('error') }}
+                                </span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
                             @endif
                             @if (session()->has('success'))
-                                <div class="alert alert-success alert-dismissible fade show w-80" role="alert">
-                                    <span class="alert-inner--icon"><i class="fe fe-thumbs-up"></i></span>
-                                    <span class="alert-inner--text"><strong>Success!</strong>
-                                        {{ session('success') }}
-                                    </span>
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div>
+                            <div class="alert alert-success alert-dismissible fade show w-80" role="alert">
+                                <span class="alert-inner--icon"><i class="fe fe-thumbs-up"></i></span>
+                                <span class="alert-inner--text"><strong>Success!</strong>
+                                    {{ session('success') }}
+                                </span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
                             @endif
                         </center>
 
@@ -74,27 +74,42 @@
                                 </a>
 
                                 @if (auth()->user()->verify_status == 0)
-                                    <div class="alert alert-danger btn m-2">
-                                        UNVERIFIED
-                                    </div>
+                                <div class="alert alert-danger btn m-2">
+                                    UNVERIFIED
+                                </div>
                                 @else
-                                    <div class="alert alert-success btn m-2">
-                                        VERIFIED
-                                    </div>
+                                <div class="alert alert-success btn m-2">
+                                    VERIFIED
+                                </div>
                                 @endif
 
                                 @if (auth()->user()->account_status == 'None')
-                                    <div class="alert alert-danger btn">
-                                        Status: {{ auth()->user()->account_status }}
-                                    </div>
+                                <div class="alert alert-danger btn">
+                                    Status: {{ auth()->user()->account_status }}
+                                </div>
                                 @else
-                                    <div class="alert alert-success btn">
-                                        Status: {{ auth()->user()->account_status }}
-                                    </div>
+                                <div class="alert alert-success btn">
+                                    Status: {{ auth()->user()->account_status }}
+                                </div>
                                 @endif
 
                             </div>
                         </div>
+                        {{-- <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="card overflow-hidden">
+                                    <div class="card-body">
+                                        <h5 class="text-center mb-3">Your Referral Link</h5>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="referralLink"
+                                                value="{{ route('register', ['referral' => auth()->user()->last_name]) }}"
+                                                readonly style="overflow-x: auto; white-space: nowrap;">
+                                            <button class="btn btn-primary" id="copyBtn">Copy</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> --}}
                         <livewire:user.account-summary />
                         <!-- PAGE-HEADER END -->
                         <div class="row row-cards">
@@ -145,8 +160,8 @@
                                                     style="background-color: #161616;border-radius: 10px">
                                                     {{-- <li>
                                                         <a style="color: #ADADAD;font-weight: bold;font-family:'Roboto', sans-serif;"
-                                                            href="#tab5" class="active btn m-1 p-2 px-5"
-                                                            id="tab-5" data-bs-toggle="tab">Buy
+                                                            href="#tab5" class="active btn m-1 p-2 px-5" id="tab-5"
+                                                            data-bs-toggle="tab">Buy
                                                         </a>
                                                     </li>
                                                     <li>
@@ -179,11 +194,13 @@
                                                     <crypto-converter-widget shadow symbol live
                                                         background-color="#383a59" border-radius="0.87rem"
                                                         fiat="united-states-dollar" crypto="bitcoin" amount="1"
-                                                        font-family="sans-serif"
-                                                        decimal-places="2"></crypto-converter-widget>
+                                                        font-family="sans-serif" decimal-places="2">
+                                                    </crypto-converter-widget>
                                                     <a href="#" target="_blank" rel="noopener">
                                                     </a>
-                                                    <script async src="https://cdn.jsdelivr.net/gh/dejurin/crypto-converter-widget@1.5.2/dist/latest.min.js"></script>
+                                                    <script async
+                                                        src="https://cdn.jsdelivr.net/gh/dejurin/crypto-converter-widget@1.5.2/dist/latest.min.js">
+                                                    </script>
                                                     <!-- /Crypto Converter ⚡ Widget -->
                                                 </div>
                                             </div>
@@ -202,13 +219,23 @@
         <!-- FOOTER -->
         @include('includes.user-footer')
         <!-- FOOTER END -->
-        
+
         <!-- APP-NAv -->
         @include('includes.user-nav-down')
         <!-- /APP-NAv -->
     </div>
     <!-- CONTAINER END -->
     @include('includes.user-scripts')
+
+    {{-- <script>
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            let input = document.getElementById('referralLink');
+            input.select();
+            input.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand('copy');
+            alert('Referral link copied!');
+        });
+    </script> --}}
 
 </body>
 

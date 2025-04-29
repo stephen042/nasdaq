@@ -5,7 +5,7 @@
         </span>
 
         @error('first_name')
-            <em class="text-danger">{{ $message }}</em>
+        <em class="text-danger">{{ $message }}</em>
         @enderror
         <div class="wrap-input100 validate-input" data-bs-validate="Valid email is required: ex@abc.xyz">
             <input class="input100" type="text" wire:model="first_name" name="first_name" required
@@ -17,7 +17,7 @@
         </div>
 
         @error('last_name')
-            <em class="text-danger">{{ $message }}</em>
+        <em class="text-danger">{{ $message }}</em>
         @enderror
         <div class="wrap-input100 validate-input" data-bs-validate="Valid email is required: ex@abc.xyz">
             <input class="input100" type="text" wire:model="last_name" name="last_name" required
@@ -29,7 +29,7 @@
         </div>
 
         @error('email')
-            <em class="text-danger">{{ $message }}</em>
+        <em class="text-danger">{{ $message }}</em>
         @enderror
         <div class="wrap-input100 validate-input" data-bs-validate="Valid email is required: ex@abc.xyz">
             <input class="input100" type="text" wire:model="email" name="email" required placeholder="Email">
@@ -40,11 +40,10 @@
         </div>
 
         @error('phone')
-            <em class="text-danger">{{ $message }}</em>
+        <em class="text-danger">{{ $message }}</em>
         @enderror
         <div class="wrap-input100 validate-input" data-bs-validate="Valid email is required: ex@abc.xyz">
-            <input class="input100" type="number" wire:model="phone" name="phone" required
-                placeholder="Phone Number">
+            <input class="input100" type="number" wire:model="phone" name="phone" required placeholder="Phone Number">
             <span class="focus-input100"></span>
             <span class="symbol-input100">
                 <i class="mdi mdi-phone" aria-hidden="true"></i>
@@ -52,7 +51,7 @@
         </div>
 
         @error('country')
-            <em class="text-danger">{{ $message }}</em>
+        <em class="text-danger">{{ $message }}</em>
         @enderror
         <div class="wrap-input100 validate-input" data-bs-validate="Valid email is required: ex@abc.xyz">
             <select name="country" class="input100" wire:model="country" data-bs-placeholder="Select Country">
@@ -325,20 +324,37 @@
             </span>
         </div>
 
-        @error('password')
-            <em class="text-danger">{{ $message }}</em>
+        {{-- @error('referral')
+        <em class="text-danger">{{ $message }}</em>
         @enderror
-        <div class="wrap-input100 validate-input" data-bs-validate="Password is required">
-            <input class="input100" type="password" wire:model="password" name="password" required
+        <div class="wrap-input100 validate-input" data-bs-validate="Valid email is required: ex@abc.xyz">
+            <input class="input100" type="text" wire:model="referral" name="referral"
+                placeholder="Referral ID (Optional)" readonly>
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+                <i class="mdi mdi-account" aria-hidden="true"></i>
+            </span>
+        </div> --}}
+
+
+        @error('password')
+        <em class="text-danger">{{ $message }}</em>
+        @enderror
+        <div class="wrap-input100 validate-input position-relative" data-bs-validate="Password is required">
+            <input class="input100" wire:model="password" type="password" id="password" name="password"
                 placeholder="Password">
             <span class="focus-input100"></span>
             <span class="symbol-input100">
                 <i class="zmdi zmdi-lock" aria-hidden="true"></i>
             </span>
+            <span class="position-absolute end-0 top-50 translate-middle-y me-3" onclick="togglePassword()"
+                style="cursor: pointer;">
+                <i id="togglePasswordIcon" class="zmdi zmdi-eye"></i>
+            </span>
         </div>
 
         @error('password_confirmation')
-            <em class="text-danger">{{ $message }}</em>
+        <em class="text-danger">{{ $message }}</em>
         @enderror
         <div class="wrap-input100 validate-input" data-bs-validate="Password is required">
             <input class="input100" wire:model="password_confirmation" type="password" name="password_confirmation"
@@ -350,17 +366,17 @@
         </div>
 
         @error('gender')
-            <em class="text-danger">{{ $message }}</em>
+        <em class="text-danger">{{ $message }}</em>
         @enderror
         <div class="d-flex">
             <label class="custom-control custom-radio mx-3">
-                <input type="radio" class="custom-control-input" wire:model="gender" name="gender"
-                    value="male" checked required>
+                <input type="radio" class="custom-control-input" wire:model="gender" name="gender" value="male" checked
+                    required>
                 <span class="custom-control-label">Male</span>
             </label>
             <label class="custom-control custom-radio mx-3">
-                <input type="radio" class="custom-control-input" wire:model="gender" name="gender"
-                    value="female" required>
+                <input type="radio" class="custom-control-input" wire:model="gender" name="gender" value="female"
+                    required>
                 <span class="custom-control-label">Female</span>
             </label>
         </div>
@@ -375,7 +391,7 @@
                 Register
                 <x-spinner />
             </button>
-            
+
         </div>
         <div class="text-center pt-3">
             <p class="text-dark mb-0">Already have account?<a href="login" class="text-primary ms-1">Sign In</a>

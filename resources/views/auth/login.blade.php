@@ -23,7 +23,8 @@
                 <div class="col col-login mx-auto mt-7">
                     <div class="text-center">
                         <a href="/">
-                            <img src="{{ asset('home-assets/assets/img/logo-white.png') }}" class="header-brand-img" style="" alt="">
+                            <img src="{{ asset('home-assets/assets/img/logo-white.png') }}" class="header-brand-img"
+                                style="" alt="">
                         </a>
                     </div>
                 </div>
@@ -40,15 +41,15 @@
                     </div>
                     @endif
                     @if (session()->has('success'))
-                        <div class="alert alert-success alert-dismissible fade show w-50 bg-dark" role="alert">
-                            <span class="alert-inner--icon"><i class="fe fe-thumbs-up"></i></span>
-                            <span class="alert-inner--text"><strong>Success!</strong>
-                                {{ session('success') }}
-                            </span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
+                    <div class="alert alert-success alert-dismissible fade show w-50 bg-dark" role="alert">
+                        <span class="alert-inner--icon"><i class="fe fe-thumbs-up"></i></span>
+                        <span class="alert-inner--text"><strong>Success!</strong>
+                            {{ session('success') }}
+                        </span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
                     @endif
                 </center>
                 <div class="container-login100">
@@ -81,6 +82,22 @@
 
     @include('includes.user-scripts')
 
+    <script>
+        function togglePassword() {
+            let passwordField = document.getElementById("password");
+            let toggleIcon = document.getElementById("togglePasswordIcon");
+    
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleIcon.classList.remove("zmdi-eye");
+                toggleIcon.classList.add("zmdi-eye-off");
+            } else {
+                passwordField.type = "password";
+                toggleIcon.classList.remove("zmdi-eye-off");
+                toggleIcon.classList.add("zmdi-eye");
+            }
+        }
+    </script>
 </body>
 
 </html>

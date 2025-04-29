@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('gender');
             $table->string('country');
             $table->string('profile_pic')->nullable();
+            $table->string('referred_by')->nullable();
             $table->string('account_status'); // VIP ,none etc default None
             $table->integer('progress_bar_status')->default(0);
             $table->integer('verify_status'); //status means kyc  

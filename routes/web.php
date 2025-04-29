@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GuestController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,7 @@ Route::middleware('guest')->group(function () {
     Route::view('/forgot-password',  'auth.forgot-password')->name('forgot_password');
     Route::get('/password-reset/{email}/{token}',  [UserController::class, 'password_rest'])->name('password_reset');
     Route::post('/password-reset/{email}/{token}',  [UserController::class, 'password_rest'])->name('password_reset_post');
-    Route::view('/register', 'auth.register')->name('register');
+    Route::get('/register/{referral?}', [UserController::class, 'register'])->name('register');
 
     // Home Routes 
 

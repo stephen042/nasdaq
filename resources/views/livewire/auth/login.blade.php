@@ -5,9 +5,9 @@
         </span>
 
         @error('email')
-            <em class="text-danger">{{ $message }}</em>
+        <em class="text-danger">{{ $message }}</em>
         @enderror
-        <div class="wrap-input100 validate-input" data-bs-validate = "Valid email is required: ex@abc.xyz">
+        <div class="wrap-input100 validate-input" data-bs-validate="Valid email is required: ex@abc.xyz">
             <input class="input100" wire:model="email" type="text" name="email" placeholder="Email">
             <span class="focus-input100"></span>
             <span class="symbol-input100">
@@ -17,13 +17,18 @@
 
 
         @error('password')
-            <em class="text-danger">{{ $message }}</em>
+        <em class="text-danger">{{ $message }}</em>
         @enderror
-        <div class="wrap-input100 validate-input" data-bs-validate = "Password is required">
-            <input class="input100" wire:model="password" type="password" name="password" placeholder="Password">
+        <div class="wrap-input100 validate-input position-relative" data-bs-validate="Password is required">
+            <input class="input100" wire:model="password" type="password" id="password" name="password"
+                placeholder="Password">
             <span class="focus-input100"></span>
             <span class="symbol-input100">
                 <i class="zmdi zmdi-lock" aria-hidden="true"></i>
+            </span>
+            <span class="position-absolute end-0 top-50 translate-middle-y me-3" onclick="togglePassword()"
+                style="cursor: pointer;">
+                <i id="togglePasswordIcon" class="zmdi zmdi-eye"></i>
             </span>
         </div>
         <div class="text-end pt-1">

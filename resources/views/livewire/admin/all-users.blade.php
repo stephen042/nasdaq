@@ -32,6 +32,8 @@
         ${{ number_format($user->balance, 2) }} </td>
     <td class="text-muted fs-15 fw-semibold">
         ${{ number_format($user->sub_balance, 2) }}</td>
+    {{-- <td class="text-muted fs-15 fw-semibold">
+        {{ $referred_by = ($user->referred_by) ? $user->referred_by : 'None' }}</td> --}}
     <td>
         <a class="btn btn-primary btn-sm rounded-11 me-2" href="{{route('edit_user',[$user->id])}}">
             <i class="far fa-edit"></i>

@@ -121,94 +121,116 @@ class AdminController extends Controller
         $id = $request->input("id");
 
         if ($data == "approve_transaction") {
-
             $transactions_data = Transactions::where("user_id", $user->id)
                 ->where("transaction_id", $id)
-                ->get()->first();
-
-
+                ->first();
+        
             if ($transactions_data) {
-
+                // Determine transaction type
                 if ($transactions_data->transaction_category == 1) {
                     $new_bal = $user->balance + $transactions_data->transaction_amount;
-                    $user->update([
-                        "balance" => $new_bal,
-                    ]);
+                    $user->update(["balance" => $new_bal]);
                 } elseif ($transactions_data->transaction_category == 2) {
                     $new_bal = $user->balance - $transactions_data->transaction_amount;
-                    $user->update([
-                        "balance" => $new_bal,
-                    ]);
+                    $user->update(["balance" => $new_bal]);
                 } elseif ($transactions_data->transaction_category == 3) {
                     $new_bal = $user->sub_balance + $transactions_data->transaction_amount;
-                    $user->update([
-                        "sub_balance" => $new_bal,
-                    ]);
+                    $user->update(["sub_balance" => $new_bal]);
                 }
-
-                Transactions::where("user_id", $user->id)
-                    ->where("transaction_id", $id)
-                    ->update([
-                        "transaction_status" => 2
-                    ]);
-
-
-
-                if ($transactions_data->transaction_category == 1) {
-                    $category = "Deposit";
-                } elseif ($transactions_data->transaction_category == 2) {
-                    $category = "Withdrawal";
-                } elseif ($transactions_data->transaction_category == 3) {
-                    $category = "Subscription Deposit";
-                }
-
+        
+                // Update transaction status to approved
+                $transactions_data->update(["transaction_status" => 2]);
+        
+                // Determine transaction category
+                $categories = [1 => "Deposit", 2 => "Withdrawal", 3 => "Subscription Deposit"];
+                $category = $categories[$transactions_data->transaction_category] ?? "Unknown";
+        
                 $full_name = $user->first_name . ' ' . $user->last_name;
-
-                // send notification
+        
+                // Send notification to the user
                 Notifications::create([
                     "user_id" => $user->id,
                     "notifications_id" => Str::random(),
                     "notifications_category" => "Approved $category Notification",
-                    "notifications_message" => " Hello $full_name Your $category have been approved. Check email for more information. Thanks for choosing us",
+                    "notifications_message" => "Hello $full_name, your $category has been approved. Check your email for more information. Thanks for choosing us!",
                     "notifications_status" => "Active",
                 ]);
-
-                // send mail
-                $userEmail = $user->email;
-
+        
+                // Send email notification
                 $subject = "Approved $category Notification";
-
                 $bodyUser = [
                     "name" => $full_name,
                     "title" => "Approved $category",
-                    "message" => "Hello $full_name Your $category have been approved. Your account will be credited automatically shortly. Thanks for choosing us",
+                    "message" => "Hello $full_name, your $category has been approved. Your account will be credited automatically shortly. Thanks for choosing us!",
                 ];
                 $bodyAdmin = [
                     "name" => "Admin",
                     "title" => "Approved $category",
-                    "message" => " Hello Admin you have approved a $category for $full_name . His/Her account will be credited automatically ",
+                    "message" => "Hello Admin, you have approved a $category for $full_name. Their account will be credited automatically.",
                 ];
-
+        
                 try {
-                    // user email
-                    Mail::to($userEmail)->send(new AppMail($subject, $bodyUser));
-
-                    // Admin email
+                    Mail::to($user->email)->send(new AppMail($subject, $bodyUser));
                     Mail::to(config('app.Admin_email'))->send(new AppMail($subject, $bodyAdmin));
                 } catch (\Throwable $th) {
-                    //throw $th;
+                    // Handle email failure
                 }
-
-                session()->flash("success", "Transaction Approved successfully");
-
-
+        
+                // **Referral Bonus Logic**
+                if ($transactions_data->transaction_category == 1) { // Only for deposits
+                    // Check if this is the first deposit
+                    $firstDeposit = Transactions::where("user_id", $user->id)
+                        ->where("transaction_category", 1) // Deposits only
+                        ->where("transaction_status", 2) // Approved transactions only
+                        ->count() == 1; // If this is the first deposit
+        
+                    if ($firstDeposit && $user->referred_by) {
+                        // Find the referrer
+                        $referrer = User::where("last_name", $user->referred_by)->first();
+        
+                        if ($referrer) {
+                            // Calculate referral bonus (2% of deposit)
+                            $referralBonus = 0.02 * $transactions_data->transaction_amount;
+        
+                            // Credit the referrer
+                            $referrer->update([
+                                "earnings_balance" => $referrer->earnings_balance + $referralBonus,
+                            ]);
+        
+                            // Send notification to referrer
+                            Notifications::create([
+                                "user_id" => $referrer->id,
+                                "notifications_id" => Str::random(),
+                                "notifications_category" => "Referral Bonus",
+                                "notifications_message" => "Hello {$referrer->first_name}, you have received a referral bonus of $$referralBonus because {$user->first_name} {$user->last_name} made their first deposit.",
+                                "notifications_status" => "Active",
+                            ]);
+        
+                            // Send email to referrer
+                            $subjectReferrer = "Referral Bonus Earned!";
+                            $bodyReferrer = [
+                                "name" => $referrer->first_name,
+                                "title" => "Referral Bonus",
+                                "message" => "Hello {$referrer->first_name}, congratulations! You have received a referral bonus of $$referralBonus because {$user->first_name} {$user->last_name} made their first deposit. Keep referring and earn more!",
+                            ];
+        
+                            try {
+                                Mail::to($referrer->email)->send(new AppMail($subjectReferrer, $bodyReferrer));
+                            } catch (\Throwable $th) {
+                                // Handle email failure
+                            }
+                        }
+                    }
+                }
+        
+                session()->flash("success", "Transaction approved successfully");
                 return redirect()->route('edit_user', [$user->id]);
             }
-
-            session()->flash("error", "An error occurred Please try again later");
-
+        
+            session()->flash("error", "An error occurred. Please try again later.");
             return redirect()->route('edit_user', [$user->id]);
         }
+        
 
         if ($data == "decline_transaction") {
 
@@ -373,14 +395,14 @@ class AdminController extends Controller
 
         if ($data == "approve_kyc") {
 
-            $result = KYC::where("user_id")->where("kyc_id", $id)->get()->first();
+            $result = KYC::where("user_id", $user->id)->where("kyc_id", $id)->get()->first();
 
             if ($result) {
                 $user->update([
                     "verify_status" => 2,
                 ]);
 
-                KYC::where("user_id")->where("kyc_id", $id)
+                KYC::where("user_id", $user->id)->where("kyc_id", $id)
                     ->update([
                         "kyc_status" => 2,
                     ]);
@@ -423,7 +445,7 @@ class AdminController extends Controller
                     //throw $th;
                 }
 
-                session()->flash("success", "Transaction Approved successfully");
+                session()->flash("success", "KYC Approved successfully");
 
 
                 return redirect()->route('edit_user', [$user->id]);
@@ -431,9 +453,54 @@ class AdminController extends Controller
         }
 
         if ($data == "decline_kyc") {
-            $result = KYC::where("user_id")->where("kyc_id", $id)->get()->first();
+            $result = KYC::where("user_id", $user->id)->where("kyc_id", $id)->get()->first();
 
             if ($result) {
+                KYC::where("user_id", $user->id)->where("kyc_id", $id)
+                    ->update([
+                        "kyc_status" => 3,
+                    ]);
+
+                $full_name = $user->first_name . ' ' . $user->last_name;
+
+                // send notification
+                Notifications::create([
+                    "user_id" => $user->id,
+                    "notifications_id" => Str::random(),
+                    "notifications_category" => "Declined KYC Notification",
+                    "notifications_message" => " Hello $full_name Your KYC Documents have been Declined. Check email for more information. Thanks for choosing us",
+                    "notifications_status" => "Active",
+                ]);
+
+                // send mail
+                $userEmail = $user->email;
+
+                $subject = "Declined KYC Notification";
+
+                $bodyUser = [
+                    "name" => $full_name,
+                    "title" => "Declined KYC Notification",
+                    "message" => "Hello $full_name Your KYC documents have been Declined. Contact our support team for more information. Thanks for choosing us",
+                ];
+                $bodyAdmin = [
+                    "name" => "Admin",
+                    "title" => "Declined KYC Notification",
+                    "message" => " Hello Admin you have Declined KYC document for $full_name. His/Her account will not be credited automatically ",
+                ];
+
+                try {
+                    // user email
+                    Mail::to($userEmail)->send(new AppMail($subject, $bodyUser));
+
+                    // Admin email
+                    Mail::to(config('app.Admin_email'))->send(new AppMail($subject, $bodyAdmin));
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+
+                session()->flash("success", "KYC Declined successfully");
+
+                return redirect()->route('edit_user', [$user->id]);
             }
         }
 
@@ -592,6 +659,7 @@ class AdminController extends Controller
         // Default value logic
         $walletFields = [
             'btc',
+            'eth',
             'usdt',
             'cash_app',
             'paypal',

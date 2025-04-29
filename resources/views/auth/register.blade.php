@@ -28,7 +28,8 @@
                 </div>
                 <div class="container-login100">
                     <div class="wrap-login100 p-0">
-                        <livewire:auth.register />
+                        {{-- Add this incase you want referral  :referral="$referral" --}}
+                        <livewire:auth.register/> 
                         <div class="card-footer">
                             <div class="d-flex justify-content-center my-3">
                                 <a href="javascript:void(0);" class="social-login  text-center me-4">
@@ -54,6 +55,22 @@
 
     @include('includes.user-scripts')
 
+    <script>
+        function togglePassword() {
+            let passwordField = document.getElementById("password");
+            let toggleIcon = document.getElementById("togglePasswordIcon");
+    
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                toggleIcon.classList.remove("zmdi-eye");
+                toggleIcon.classList.add("zmdi-eye-off");
+            } else {
+                passwordField.type = "password";
+                toggleIcon.classList.remove("zmdi-eye-off");
+                toggleIcon.classList.add("zmdi-eye");
+            }
+        }
+    </script>
 </body>
 
 </html>

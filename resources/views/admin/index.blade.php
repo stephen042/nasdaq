@@ -142,6 +142,8 @@
                                                         <th class="bg-transparent border-bottom-0">Balance</th>
                                                         <th class="bg-transparent border-bottom-0">Subscription Balance
                                                         </th>
+                                                        {{-- <th class="bg-transparent border-bottom-0">Referred By
+                                                        </th> --}}
                                                         <th class="bg-transparent border-bottom-0">Action</th>
                                                     </tr>
                                                 </thead>
