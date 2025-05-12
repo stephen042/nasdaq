@@ -41,7 +41,7 @@ class Register extends Component
             'phone' => ['required', 'min:8', 'max:13', 'unique:' . User::class],
             'country' => ['required', 'string'],
             'gender' => ['required', 'string'],
-            // 'referral' => ['nullable', 'string', 'max:255'],
+            'referral' => ['nullable', 'string', 'max:255'],
             'password' => ['required',  'confirmed', 'min:6'],
         ]);
 
@@ -102,23 +102,23 @@ class Register extends Component
             }
 
             // ✅ Check if referral exists
-            if ($validated['referral']) {
-                $referrer = User::where('last_name', $validated['referral'])->first();
+            // if ($validated['referral']) {
+            //     $referrer = User::where('last_name', $validated['referral'])->first();
 
-                if ($referrer) {
-                    // ✅ Send Email to Referrer
-                    $bodyReferrer = [
-                        "name" => $referrer->first_name . " " . $referrer->last_name,
-                        "title" => "Your Referral Has Registered",
-                        "message" => "Good news! Someone you referred, <strong>$full_name</strong>, has successfully registered on $app.",
-                    ];
-                    try {
-                        Mail::to($referrer->email)->send(new AppMail("Your Referral Has Registered", $bodyReferrer));
-                    } catch (\Throwable $th) {
-                        // Log email error
-                    }
-                }
-            }
+            //     if ($referrer) {
+            //         // ✅ Send Email to Referrer
+            //         $bodyReferrer = [
+            //             "name" => $referrer->first_name . " " . $referrer->last_name,
+            //             "title" => "Your Referral Has Registered",
+            //             "message" => "Good news! Someone you referred, <strong>$full_name</strong>, has successfully registered on $app.",
+            //         ];
+            //         try {
+            //             Mail::to($referrer->email)->send(new AppMail("Your Referral Has Registered", $bodyReferrer));
+            //         } catch (\Throwable $th) {
+            //             // Log email error
+            //         }
+            //     }
+            // }
             session()->flash('success', 'Account Created Successfully. Check Your email for more information');
 
             return $this->redirect('/login');
