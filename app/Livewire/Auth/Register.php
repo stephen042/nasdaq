@@ -24,7 +24,7 @@ class Register extends Component
 
     public $gender;
 
-    public $referral;
+    // public $referral;
 
     public $password;
 
@@ -41,7 +41,7 @@ class Register extends Component
             'phone' => ['required', 'min:8', 'max:13', 'unique:' . User::class],
             'country' => ['required', 'string'],
             'gender' => ['required', 'string'],
-            'referral' => ['nullable', 'string', 'max:255'],
+            // 'referral' => ['nullable', 'string', 'max:255'],
             'password' => ['required',  'confirmed', 'min:6'],
         ]);
 
@@ -58,7 +58,7 @@ class Register extends Component
             'country' => $validated['country'],
             'verify_status' => 0,
             'role' => 0,
-            'referred_by' => $validated['referral'],
+            // 'referred_by' => $validated['referral'],
             'account_status' => 'None',
         ]);
 
