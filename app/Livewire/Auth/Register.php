@@ -36,8 +36,8 @@ class Register extends Component
 
         $validated = $this->validate([
             'first_name' => ['required', 'string', 'max:255', 'min:3'],
-            'last_name' => ['required', 'string', 'max:255', 'min:3'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'last_name' => ['required', 'string', 'max:100', 'min:3'],
+            'email' => ['required', 'string', 'email', 'max:100', 'unique:' . User::class],
             'phone' => ['required', 'min:8', 'max:13', 'unique:' . User::class],
             'country' => ['required', 'string'],
             'gender' => ['required', 'string'],
