@@ -41,7 +41,7 @@ class Register extends Component
             'phone' => ['required', 'min:8', 'max:13', 'unique:' . User::class],
             'country' => ['required', 'string'],
             'gender' => ['required', 'string'],
-            'referral' => ['nullable', 'string', 'max:255'],
+            // 'referral' => ['nullable', 'string', 'max:255'],
             'password' => ['required',  'confirmed', 'min:6'],
         ]);
 
