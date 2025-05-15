@@ -2,6 +2,7 @@
 
 namespace App\Livewire\User;
 
+use App\Helpers\ImageUploader;
 use Carbon\Carbon;
 use App\Models\KYC;
 use App\Models\User;
@@ -48,8 +49,12 @@ class SecuritySettings extends Component
         $user_id = Auth::user()->id;
         $full_name = Auth::user()->last_name . ' ' . Auth::user()->first_name;
 
-        $front_document_path = $this->front_document->store('kyc', 'public');
-        $back_document_path = $this->back_document->store('kyc', 'public');
+        // $front_document_path = $this->front_document->store('kyc', 'public');
+        $front_document_path = ImageUploader::upload($this->front_document, 'kyc');
+        // $back_document_path = $this->back_document->store('kyc', 'public');
+        $back_document_path = ImageUploader::upload($this->back_document, 'kyc');
+        
+
 
         $result = KYC::create([
             "user_id" => $user_id,

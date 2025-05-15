@@ -6,7 +6,7 @@
         <div class="d-flex">
             @if ($user->profile_pic)
                 <span class="avatar avatar-md brround">
-                    <img src="{{ asset('storage/' . $user->profile_pic) }}" alt="User Avatar"
+                    <img src="{{ asset($user->profile_pic) }}" alt="User Avatar"
                         class="avatar avatar-md brround">
                 </span>
             @else

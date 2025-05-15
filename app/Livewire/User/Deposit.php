@@ -4,17 +4,18 @@ namespace App\Livewire\User;
 
 use App\Models\User;
 use App\Mail\AppMail;
-use App\Models\Admin_wallets;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use App\Models\Transactions;
+use App\Models\Admin_wallets;
 use App\Models\Notifications;
 use Livewire\Attributes\Rule;
 use Livewire\WithFileUploads;
+use App\Helpers\ImageUploader;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class Deposit extends Component
@@ -48,9 +49,9 @@ class Deposit extends Component
 
         if ($this->asset == "Bitcoin") {
             return $this->modalName = "#bitcoin";
-        }elseif ($this->asset == "Ethereum") {
+        } elseif ($this->asset == "Ethereum") {
             return $this->modalName = "#ethereum";
-        }elseif ($this->asset == "USDT Trc20") {
+        } elseif ($this->asset == "USDT Trc20") {
             return $this->modalName = "#usdt";
         } elseif ($this->asset == "Cash App") {
             return $this->modalName = "#cashapp";
@@ -79,7 +80,9 @@ class Deposit extends Component
         $user_id = Auth::user()->id;
         $full_name = Auth::user()->last_name . ' ' . Auth::user()->first_name;
 
-        $proofPath = $this->proof->store('proof','public');
+        // $proofPath = $this->proof->store('proof','public');
+        // Upload the proof image to Cloudinary
+        $proofPath = ImageUploader::upload($this->proof, 'proof');
 
         $result = Transactions::create([
             "user_id" => $user_id,
@@ -108,7 +111,7 @@ class Deposit extends Component
                 "notifications_status" => "Active",
             ]);
 
-            
+
             // send mail
             $app = config('app.name');
             $userEmail = Auth::user()->email;
@@ -127,7 +130,7 @@ class Deposit extends Component
             $bodyAdmin = [
                 "name" => "Admin",
                 "title" => "Customer Deposit Request",
-                "message" => " Hello Admin a User by the name $full_name have successfully made a Deposit Request of $$amount on ".date('Y-M-d H:i ').". Check his/her dashboard for further details;
+                "message" => " Hello Admin a User by the name $full_name have successfully made a Deposit Request of $$amount on " . date('Y-M-d H:i ') . ". Check his/her dashboard for further details;
                 ",
             ];
 
@@ -143,7 +146,7 @@ class Deposit extends Component
 
             return $this->reset();
         }
-        
+
         session()->flash('error', 'An error occurred please try again later or contact support team');
         return $this->redirect('/users/deposit');
     }
@@ -152,9 +155,9 @@ class Deposit extends Component
     {
         $user_id = auth()->user()->id;
 
-        $transactions =  Transactions::where("user_id",$user_id)->get()->first();
+        $transactions =  Transactions::where("user_id", $user_id)->get()->first();
 
-        return view('livewire.user.deposit',[
+        return view('livewire.user.deposit', [
             "transactions" => $transactions,
             "admin_wallet" => Admin_wallets::get()->first(),
         ]);

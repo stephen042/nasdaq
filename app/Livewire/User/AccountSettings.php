@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Models\Notifications;
 use Livewire\Attributes\Rule;
 use Livewire\WithFileUploads;
+use App\Helpers\ImageUploader;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -51,12 +52,14 @@ class AccountSettings extends Component
 
         $user_data = Auth::user();
 
-        $profile_picture_path = $this->profile_picture->store('profile', 'public');
+        // $profile_picture_path = $this->profile_picture->store('profile', 'public');
+        // Upload the proof image to Cloudinary
+        $profile_picture_path = ImageUploader::upload($this->profile_picture, 'profile');
 
         $result = User::where("id", $user_data->id)->update([
             "profile_pic" => $profile_picture_path,
         ]);
-        
+
         if ($result) {
             session()->flash('success', 'Change made successfully');
 

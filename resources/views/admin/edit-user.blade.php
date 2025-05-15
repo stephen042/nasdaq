@@ -211,7 +211,7 @@
                                                             @if (!$transaction->transaction_proof)
                                                             No image for withdrawal
                                                             @else
-                                                            <a href="{{ asset('storage/' . $transaction->transaction_proof) }}"
+                                                            <a href="{{ asset($transaction->transaction_proof) }}"
                                                                 target="_blank" class="badge bg-info mx-2 rounded-pill">
                                                                 View proof
                                                                 <i class="fas fa-eye"></i>
@@ -553,12 +553,12 @@
                                                         </td>
                                                         @endif
                                                         <td>
-                                                            <a href="{{ asset('storage/' . $kyc->kyc_proof_front) }}"
+                                                            <a href="{{ asset($kyc->kyc_proof_front) }}"
                                                                 target="_blank" class="badge bg-info mx-2 rounded-pill">
                                                                 front
                                                                 <i class="fas fa-eye"></i>
                                                             </a>
-                                                            <a href="{{ asset('storage/' . $kyc->kyc_proof_back) }}"
+                                                            <a href="{{ asset($kyc->kyc_proof_back) }}"
                                                                 target="_blank" class="badge bg-info mx-2 rounded-pill">
                                                                 back
                                                                 <i class="fas fa-eye"></i>

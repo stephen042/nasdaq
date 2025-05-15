@@ -60,7 +60,7 @@
                 <a href="javascript:void(0);" data-bs-toggle="dropdown" class="nav-link leading-none d-flex px-1">
                     <span>
                         @if ($user_data->profile_pic)
-                            <img src="{{ asset('storage/' . $user_data->profile_pic) }}" alt="profile-user"
+                            <img src="{{ asset($user_data->profile_pic) }}" alt="profile-user"
                                 class="avatar profile-user brround cover-image">
                         @else
                             <img src="{{asset('assets/images/profile.png')}}" alt="User Avatar"

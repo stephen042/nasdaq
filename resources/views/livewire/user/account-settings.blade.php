@@ -11,7 +11,7 @@
             <div class="d-flex mb-3">
                 <form wire:submit="update_profile_pic">
                     @if ($user_data->profile_pic)
-                        <img src="{{ asset('storage/' . $user_data->profile_pic) }}" alt="User Avatar"
+                        <img src="{{ asset($user_data->profile_pic) }}" alt="User Avatar"
                             class="rounded-circle avatar-lg me-2">
                     @else
                         <img src="{{asset('assets/images/profile.png')}}" alt="User Avatar" class="rounded-circle avatar-lg me-2">
