@@ -95,4 +95,4 @@
             });
         });
 </script>
-<script id="chatway" async="true" src="https://cdn.chatway.app/widget.js?id=xESYHDLdcUEZ"></script>
+<script id="chatway" async="true" src="https://cdn.chatway.app/widget.js?id=oPYubv77WYRM"></script>

@@ -85,4 +85,27 @@
         }
     })();
 </script>
-<script id="chatway" async="true" src="https://cdn.chatway.app/widget.js?id=xESYHDLdcUEZ"></script>
+<script id="chatway" async="true" src="https://cdn.chatway.app/widget.js?id=oPYubv77WYRM"></script>
+
+<!-- Elfsight WhatsApp Chat | Untitled WhatsApp Chat -->
+{{-- <script src="https://static.elfsight.com/platform/platform.js" async></script>
+<div class="elfsight-app-79cfadb4-781e-4b74-b759-f11a2501218e" data-elfsight-app-lazy></div> --}}
+
+<div style="position: fixed; bottom: 20px; left: 20px; z-index: 999;">
+  <a href="https://wa.me/447944350625?text=Hello%2C%20I'm%20interested%20in%20your%20services" target="_blank" style="
+    background-color: #25D366;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-family: sans-serif;
+    font-size: 14px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  ">
+    <img src="https://img.icons8.com/ios-filled/29/ffffff/whatsapp.png" alt="WhatsApp" style="width: 29px; height: 29px; margin-right: 8px;" />
+    Chat
+  </a>
+</div>
+
