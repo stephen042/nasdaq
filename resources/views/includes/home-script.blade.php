@@ -85,7 +85,6 @@
         }
     })();
 </script>
-<script id="chatway" async="true" src="https://cdn.chatway.app/widget.js?id=oPYubv77WYRM"></script>
 
 <!-- Elfsight WhatsApp Chat | Untitled WhatsApp Chat -->
 {{-- <script src="https://static.elfsight.com/platform/platform.js" async></script>
