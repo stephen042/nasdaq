@@ -39,8 +39,8 @@
         });
     </script>
     
-    {{-- Chatway --}}
-    <script id="chatway" async="true" src="https://cdn.chatway.app/widget.js?id=yg6xlubWAcwW"></script>
+    {{-- jivochat --}}
+    <script src="//code.jivosite.com/widget/rHS3ZLdtdS" async></script>
 
     <noscript><img height="1" width="1" style="display:none"
             src="{{ URL('home-assets/tr?id=3616614748582193&ev=PageView&noscript=1') }}"></noscript>

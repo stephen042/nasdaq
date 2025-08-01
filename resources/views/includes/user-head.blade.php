@@ -42,8 +42,8 @@
 <link href="{{ URL('assets/switcher/css/switcher.css') }}" rel="stylesheet">
 <link href="{{ URL('assets/switcher/demo.css') }}" rel="stylesheet">
 
-{{-- Chatway --}}
-<script id="chatway" async="true" src="https://cdn.chatway.app/widget.js?id=yg6xlubWAcwW"></script>
+{{-- jivochat --}}
+<script src="//code.jivosite.com/widget/rHS3ZLdtdS" async></script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
